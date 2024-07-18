@@ -1,0 +1,26 @@
+
+
+package require tcltest
+
+source ../lib.tcl
+
+namespace import ::tcltest::*
+
+
+test sum_test {
+	test lib sum
+} -body {
+
+	lib::sum 3 2
+
+} -result 5
+
+test div_test {
+	test lib div
+} -body {
+
+	lib::div 6 2
+
+} -result 3
+
+cleanupTests

@@ -1,0 +1,49 @@
+#!/bin/tclsh
+
+source ./.tcl/deps.tcl
+
+package require hash
+package require act::http
+
+hash::hash di :a 1 :b 2
+
+puts [hash::hget $di :a]
+
+
+
+namespace eval web {
+	variable target
+}
+
+proc web::handle {} {
+
+	variable target
+
+	switch $target {
+		/ {
+			list 200 "hello, world!" "text/plain"
+		}
+
+		default {
+			list 404 "not found" "text/plain"
+		}
+	} 
+
+}
+
+act::http configure \
+	-host 127.0.0.1 \
+	-port 5151 \
+	-get web::handle \
+	-reqtargetvar web::target
+	# {list 200 "hello, world 5" "text/plain"}
+
+puts "running web app on port 5151"
+
+act::http run
+
+
+
+
+
+#vwait forever
