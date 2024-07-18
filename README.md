@@ -1,2 +1,2 @@
-# packer-tcl-example
-Packer TCL example
+# tcl-packer-example
+TCL Packer  example
