@@ -10,3 +10,9 @@ TCL Packer  example
 ```
 
 open browser on port 5151
+
+## test
+
+```bash
+./packer.tcl test
+```
