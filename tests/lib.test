@@ -2,7 +2,7 @@
 
 package require tcltest
 
-source ../lib.tcl
+source ./lib.tcl
 
 namespace import ::tcltest::*
 

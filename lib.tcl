@@ -2,13 +2,11 @@
 
 
 namespace eval lib {
+	proc sum {x y} {
+		expr {$x + $y}
+	}
 
-}
-
-proc lib::sum {x y} {
-	expr {$x + $y}
-}
-
-proc lib::div {x y} {
-	expr {$x / $y}
+	proc div {x y} {
+		expr {$x / $y}
+	}
 }

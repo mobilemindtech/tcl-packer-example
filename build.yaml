@@ -25,6 +25,7 @@ build:
 http-tcl:
   uri: https://github.com/anticrisis/tcl-http.git
   cmds:
+    - ./act vcpkg setup
     - ./act build manifest.txt
     # - ./act install manifest.txt
     - mkdir -p build/tcl/modules/act && mkdir -p build/tcl/packages 

@@ -2,14 +2,7 @@
 
 source ./.tcl/deps.tcl
 
-package require hash
 package require act::http
-
-hash::hash di :a 1 :b 2
-
-puts [hash::hget $di :a]
-
-
 
 namespace eval web {
 	variable target
