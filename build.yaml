@@ -2,8 +2,9 @@
 
 app:
   name: sample
-  description: Packer TCL example
+  description: Packer TCL sample
   entrypoint: ./main.tcl
+  testdir: ./tests
 
 dependencies:
   # - https://raw.githubusercontent.com/mobilemindtec/tcl-hash/master/hash.tcl
@@ -12,14 +13,13 @@ dependencies:
 
 requirements:
   packages: 
-    - mysqltcl
+    #- mysqltcl
   cmds:
-    - curl --version
+    #- curl --version
   
 
 build:
   cmds:
-
 
 
 http-tcl:
@@ -27,7 +27,6 @@ http-tcl:
   cmds:
     - ./act vcpkg setup
     - ./act build manifest.txt
-    # - ./act install manifest.txt
     - mkdir -p build/tcl/modules/act && mkdir -p build/tcl/packages 
     - cp build/http-0.1.tm build/tcl/modules/act/
     - cp build/act_http/pkgIndex.tcl build/tcl/packages 

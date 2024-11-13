@@ -1,18 +1,17 @@
-# tcl-packer-example
-TCL Packer  example
+# TCL Packer sample
 
 
-## run
+### run into project
 
 ```bash
-./packer.tcl build
-./packer.tcl run
+$ ./packer build
+$ ./packer run
 ```
 
 open browser on port 5151
 
-## test
+### test
 
 ```bash
-./packer.tcl test
+$ ./packer test
 ```

@@ -9,19 +9,11 @@ namespace eval web {
 }
 
 proc web::handle {} {
-
 	variable target
-
 	switch $target {
-		/ {
-			list 200 "hello, world!" "text/plain"
-		}
-
-		default {
-			list 404 "not found" "text/plain"
-		}
-	} 
-
+		/ {list 200 "hello, world!" "text/plain" }
+		default {list 404 "not found" "text/plain"}
+	}
 }
 
 act::http configure \
@@ -29,14 +21,7 @@ act::http configure \
 	-port 5151 \
 	-get web::handle \
 	-reqtargetvar web::target
-	# {list 200 "hello, world 5" "text/plain"}
 
 puts "running web app on port 5151"
 
 act::http run
-
-
-
-
-
-#vwait forever

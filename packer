@@ -107,13 +107,19 @@ proc packer::main {argc argv} {
     variable configs
 
     create_dir
-    set configs [read_configs ]
 
     set param ""
 
     if {$argc > 0} {
         set param [lindex $argv 0]
     }
+    
+    if {$param == "init"} {
+        init $argc $argv
+        return
+    }
+
+    set configs [read_configs ]
 
     switch $param {
         build {
@@ -123,9 +129,6 @@ proc packer::main {argc argv} {
             if {[file exists $deps]} {
                 file delete -force -- $deps
             }
-        }
-        init {
-            init $argc $argv
         }
         run {
             run [dict get $configs app entrypoint]            
@@ -236,13 +239,15 @@ proc packer::test {argc argv} {
 #
 #
 proc packer::init {argc argv} {
-	set with_seed_index [lsearch $argv -seed]
 
-	if {$with_seed_index > -1} {
-		init_with_seed $argv $with_seed_index
-	} else {
-		init_empty_project
-	}
+    init_empty_project
+    
+	#set with_seed_index [lsearch $argv "--seed"]
+	#if {$with_seed_index > -1} {
+	#	init_with_seed $argv $with_seed_index
+	#} else {
+	#	init_empty_project
+	#}
 }
 
 # init empty build.yaml
@@ -282,26 +287,34 @@ proc packer::init_empty_project {} {
 }
 
 proc packer::init_with_seed {argv seed_index} {
-	set idx [lindex $argv [expr {$seed_index + 1}]
+    set idx [expr {$seed_index + 1}]
 
 	if {$idx >= [llength $argv]} {
 		return -code error {seed url required}
 	}
 
+	
 	set seed_url [lindex $argv $idx]
-
-	if {![string match "https://" $seed_url] || ![string match "*.git" $seed_url]} {
-		return -code error {seed url should be git repository}
-	}
 
 	set pname [lindex [split $seed_url /] end]
 	set pname [lindex [split $pname .] 0]
 	set cmd [list git clone $seed_url $pname | tee /dev/tty]
-	exec {*}$cmd
-	rm -rf $pname/.git
-	mv $pname/* .
-	rm -rf $pname
-	puts "<packer ::> project succefull initialized!"	
+	catch {exec {*}$cmd}
+
+    if {![file exists $pname/.git]} {
+        return -code error {can't clone seed repository}
+    }
+
+	set cmd [list rm -rf ./$pname/.git]
+    exec {*}$cmd
+
+    set cmd [list cp -Rf $pname/* .]
+    exec {*}$cmd
+
+    set cmd [list rm -rf ./$pname]
+    exec {*}$cmd
+
+	debug {project succefull initialized!}
 }
 
 #
@@ -511,6 +524,10 @@ proc packer::is_dict d {
         && !([llength $d] % 2)
         && ((2 * [llength [dict keys $d]]) == [llength $d])
     }
+}
+
+proc packer::debug msg {
+    puts "<packer ::> $msg"
 }
 
 packer::main $argc $argv
