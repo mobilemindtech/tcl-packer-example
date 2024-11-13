@@ -81,9 +81,9 @@ proc packer::run {cmd} {
 }
 
 proc packer::upgrade {} {
-	set cmd [curl https://github.com/mobilemindtech/tcl-packer/blob/master/packer.tcl > ./packer]
+	set cmd [list curl https://raw.githubusercontent.com/mobilemindtech/tcl-packer/refs/heads/master/packer.tcl -s -o ./packer]
 	exec {*}$cmd
-	puts "<packer ::> packer upgraded to last version!"
+	debug {packer upgraded to last version!}
 }
 
 #
@@ -241,7 +241,7 @@ proc packer::test {argc argv} {
 proc packer::init {argc argv} {
 
     init_empty_project
-    
+
 	#set with_seed_index [lsearch $argv "--seed"]
 	#if {$with_seed_index > -1} {
 	#	init_with_seed $argv $with_seed_index
@@ -263,6 +263,7 @@ proc packer::init_empty_project {} {
         puts $fd {  name: My app name}
         puts $fd {  description: My app description}
         puts $fd {  entrypoint: ./main.tcl}
+        puts $fd {  testdir: ./tests}
         puts $fd {}
         puts $fd {dependencies:}
         puts $fd {    # - https://github.com/user/tcp-app.git}
